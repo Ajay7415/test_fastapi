@@ -46,7 +46,3 @@ app.include_router(user.router)
 
 # @app.post("update/user")
 # def
-
-
-async def get_user():
-       pass

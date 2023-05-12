@@ -1,6 +1,7 @@
-from fastapi import APIRouter#, Annotated
+from fastapi import APIRouter, Query
 from datetime import datetime
 from pydantic import BaseModel
+from typing_extensions import Annotated
 
 router = APIRouter(prefix = "/user", tags = ['user'])
 
@@ -10,9 +11,19 @@ class User(BaseModel):
     last_name : str
     mobile  : int= None 
 
-
-
 user_data  = {1 :{"username": "test776", "first_name": "test" ,  "last_name": "user" , "mobile": 7415496606}}
+
+# --------------------------------------------------#
+# ------Api with Operations in query params---------#
+# --------------------------------------------------#
+
+@router.get('/search_user')
+async def search_user_with_query_params(q: str=Query( default='a', min_length=1, max_length =200)):  # or we can use default values in Annotated level like :-- q: Annotated[str,  Query()] = None
+    return { "message": ["ajay", "arun", "abhay", "anand",  "aman", "akshay", "akash"]}
+
+# --------------------------------------------------#
+# ------ API TO PERFORM --- CRUD OPERATION ---------#
+# --------------------------------------------------#
 
 @router.get('/{user_id}')
 async def get_user(user_id:int, name: str=None):
@@ -33,3 +44,5 @@ async def update_user(user_id:int, user:User=...):
         return {"message": "user not found "}
     user_data[user_id] = user
     return {"message": "user updated successfully", "data": user_data[user_id]}
+
+
